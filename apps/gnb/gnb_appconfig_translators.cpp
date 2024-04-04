@@ -1049,7 +1049,7 @@ std::map<five_qi_t, srs_cu_up::cu_up_qos_config> srsran::generate_cu_up_qos_conf
       report_error("Cannot create CU-UP config: No entry for {} in DU QoS config\n", qos.five_qi);
     }
     // Convert PDCP custom config
-    pdcp_custom_config& out_pdcp_custom = out_cfg[qos.five_qi].pdcp_custom;
+    pdcp_custom_config& out_pdcp_custom = out_cfg[qos.five_qi].pdcp_custom_cfg;
     out_pdcp_custom.tx.warn_on_drop     = config.cu_up_cfg.warn_on_drop;
     out_pdcp_custom.metrics_period      = timer_duration(config.metrics_cfg.pdcp.report_period);
 
@@ -1066,6 +1066,10 @@ std::map<five_qi_t, srs_cu_up::cu_up_qos_config> srsran::generate_cu_up_qos_conf
                    du_five_qi.rlc.mode,
                    qos.five_qi);
     }
+
+    // Convert F1-U config
+    srs_cu_up::f1u_config& f1u_cfg = out_cfg[qos.five_qi].f1u_cfg;
+    f1u_cfg.warn_on_drop           = config.cu_up_cfg.warn_on_drop;
   }
   return out_cfg;
 }
@@ -1150,7 +1154,8 @@ std::map<five_qi_t, du_qos_config> srsran::generate_du_qos_config(const gnb_appc
     // Convert F1-U config
     auto& out_f1u = out_cfg[qos.five_qi].f1u;
     //< t-Notify
-    out_f1u.t_notify = qos.f1u_du.t_notify;
+    out_f1u.t_notify     = qos.f1u_du.t_notify;
+    out_f1u.warn_on_drop = config.du_cfg.warn_on_drop;
 
     // Convert MAC config
     out_cfg[qos.five_qi].mac = generate_mac_lc_config(qos.mac);

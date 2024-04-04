@@ -23,25 +23,23 @@
 #pragma once
 
 #include "fmt/format.h"
-#include <cstdint>
 
 namespace srsran {
-namespace srs_du {
+namespace srs_cu_up {
 
-/// \brief Configurable parameters of the F1-U bearer in the DU
+/// \brief Configurable parameters of the F1-U bearer in the CU-UP
 struct f1u_config {
-  uint32_t t_notify;            ///< Timer used for periodic transmission of uplink notifications
-  bool     warn_on_drop = true; ///< Log a warning instead of an info message whenever a PDU is dropped
+  bool warn_on_drop = true; ///< Log a warning instead of an info message whenever a PDU is dropped
 };
 
-} // namespace srs_du
+} // namespace srs_cu_up
 } // namespace srsran
 
 namespace fmt {
 
 // F1-U config formatter
 template <>
-struct formatter<srsran::srs_du::f1u_config> {
+struct formatter<srsran::srs_cu_up::f1u_config> {
   template <typename ParseContext>
   auto parse(ParseContext& ctx) -> decltype(ctx.begin())
   {
@@ -49,9 +47,9 @@ struct formatter<srsran::srs_du::f1u_config> {
   }
 
   template <typename FormatContext>
-  auto format(srsran::srs_du::f1u_config cfg, FormatContext& ctx) -> decltype(std::declval<FormatContext>().out())
+  auto format(srsran::srs_cu_up::f1u_config cfg, FormatContext& ctx) -> decltype(std::declval<FormatContext>().out())
   {
-    return format_to(ctx.out(), "t_notif={} warn_on_drop={}", cfg.t_notify, cfg.warn_on_drop);
+    return format_to(ctx.out(), "warn_on_drop={}", cfg.warn_on_drop);
   }
 };
 
